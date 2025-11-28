@@ -1,0 +1,73 @@
+{
+	"name": "RAI Development Container",
+	"build": {
+		"dockerfile": "../docker/Dockerfile",
+		"context": "..",
+		"args": {
+			"ROS_DISTRO": "jazzy"
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"username": "vscode",
+			"uid": "1000",
+			"gid": "1000",
+			"upgradePackages": true
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"version": "latest"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"ms-python.debugpy",
+				"charliermarsh.ruff",
+				"ms-azuretools.vscode-docker",
+				"ms-vscode.cmake-tools",
+				"ms-iot.vscode-ros",
+				"redhat.vscode-yaml",
+				"eamodio.gitlens"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/usr/bin/python3",
+				"python.linting.enabled": true,
+				"python.linting.pylintEnabled": false,
+				"python.formatting.provider": "none",
+				"python.analysis.autoImportCompletions": true,
+				"python.analysis.typeCheckingMode": "basic",
+				"editor.formatOnSave": true,
+				"editor.codeActionsOnSave": {
+					"source.organizeImports": "explicit"
+				},
+				"files.associations": {
+					"*.launch": "xml",
+					"*.urdf": "xml",
+					"*.xacro": "xml"
+				},
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"terminal.integrated.profiles.linux": {
+					"bash": {
+						"path": "/bin/bash",
+						"args": ["-l"]
+					}
+				}
+			}
+		}
+	},
+	"workspaceFolder": "/rai",
+	"postCreateCommand": "bash -c 'source /opt/ros/jazzy/setup.bash && source /rai/install/setup.bash'",
+	"runArgs": [
+		"--network=host",
+		"--cap-add=SYS_PTRACE",
+		"--security-opt=seccomp=unconfined"
+	],
+	"containerEnv": {
+		"DISPLAY": "${localEnv:DISPLAY}",
+		"ROS_DISTRO": "jazzy",
+		"PYTHONUNBUFFERED": "1"
+	}
+}
